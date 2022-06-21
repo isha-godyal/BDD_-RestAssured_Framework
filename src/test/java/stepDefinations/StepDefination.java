@@ -1,49 +1,37 @@
 package stepDefinations;
 
 import static io.restassured.RestAssured.given;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import pojo.AddPlace;
-import pojo.Location;
 import resources.TestDataBuild;
+import resources.Utils;
 
-public class StepDefination {
+public class StepDefination extends Utils {
 
 	RequestSpecification req;
 	ResponseSpecification resspec;
 	Response response;
-	
-	// create an object to TestDataBuild to get TestData such place data by calling  addPlacePayLoad method
+
+	// create an object to TestDataBuild to get TestData such place data by calling
+	// addPlacePayLoad method
 	TestDataBuild data = new TestDataBuild();
 
 	@Given("Add Place Payload")
 	public void add_place_payload() {
-		RestAssured.baseURI = "https://rahulshettyacademy.com";
 
-		// Create request speccs or rule for any request which use the specs/rule
-		req = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com").addQueryParam("key", "qaclick123")
-				.setContentType(ContentType.JSON).build();
-
-		// Create response speccs or rule for any response which check for this
-		// specs/rule
 		resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 
-		req = given().spec(req).body(data.addPlacePayLoad());  // place data coming TestDataBuild class
+		req = given().spec(requestSpecification()).body(data.addPlacePayLoad()); // place data coming TestDataBuild
+																					// class
 
 	}
 
