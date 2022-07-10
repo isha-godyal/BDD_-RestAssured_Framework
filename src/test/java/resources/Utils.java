@@ -23,25 +23,29 @@ public class Utils {
 	public RequestSpecification requestSpecification() throws IOException {
 
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
-
-		// calling getGlobalValue 
-		req = new RequestSpecBuilder().setBaseUri(getGlobalValue("baseUrl")).addQueryParam("key", "qaclick123")
-				.setContentType(ContentType.JSON).build();
+		
+		if(req==null) {
+			//creating logging.txt for logging details
+			PrintStream log = new PrintStream(new FileOutputStream("logging.txt"));
+			req = new RequestSpecBuilder().setBaseUri(getGlobalValue("baseUrl"))
+					.addQueryParam("key", "qaclick123")
+					.addFilter(RequestLoggingFilter.logRequestTo(log))   // add request log in logging.txt
+					.addFilter(ResponseLoggingFilter.logResponseTo(log)) // add response log in logging.txt
+					.setContentType(ContentType.JSON).build();
+		}
 		return req;
 
 	}
 
-	
 	// creating method to read properties file and read key value
 	public static String getGlobalValue(String key) throws IOException {
 		Properties prop = new Properties();
-		
+
 		String projectPath = System.getProperty("user.dir");
-		System.out.println("projectPath : "+projectPath);
-		
-		// handling file input stream exception using throws IOException 
-		FileInputStream fis = new FileInputStream(
-				projectPath+ "/src/test/java/resources/global.properties");
+		System.out.println("projectPath : " + projectPath);
+
+		// handling file input stream exception using throws IOException
+		FileInputStream fis = new FileInputStream(projectPath + "/src/test/java/resources/global.properties");
 		prop.load(fis);
 		return prop.getProperty(key);
 
