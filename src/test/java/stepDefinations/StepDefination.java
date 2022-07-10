@@ -14,6 +14,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import resources.APIResources;
 import resources.TestDataBuild;
 import resources.Utils;
 
@@ -30,17 +31,25 @@ public class StepDefination extends Utils {
 	@Given("Add Place Payload with {string}  {string} {string}")
 	public void add_Place_Payload_with(String name, String language, String address) throws IOException {
 
-
 		resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 
-		req = given().spec(requestSpecification()).body(data.addPlacePayLoad(name,language,address)); // place data coming TestDataBuild
-																					// class
+		req = given().spec(requestSpecification()).body(data.addPlacePayLoad(name, language, address));
+		// place data coming TestDataBuild
+		// class
 
 	}
 
 	@When("user calls {string} with {string} http request")
-	public void user_calls_with_http_request(String string, String string2) {
-		response = req.when().post("/maps/api/place/add/json").then().spec(resspec).extract().response();
+	public void user_calls_with_http_request(String resource, String method) {
+		APIResources resourceAPI = APIResources.valueOf(resource);
+		System.out.println(resourceAPI.getResource());
+
+		resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
+
+		if (method.equalsIgnoreCase("POST"))
+			response = req.when().post(resourceAPI.getResource());
+		else if (method.equalsIgnoreCase("GET"))
+			response = req.when().get(resourceAPI.getResource());
 
 	}
 
