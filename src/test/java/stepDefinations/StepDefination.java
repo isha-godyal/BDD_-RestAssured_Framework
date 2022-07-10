@@ -27,12 +27,13 @@ public class StepDefination extends Utils {
 	// addPlacePayLoad method
 	TestDataBuild data = new TestDataBuild();
 
-	@Given("Add Place Payload")
-	public void add_place_payload() throws IOException {
+	@Given("Add Place Payload with {string}  {string} {string}")
+	public void add_Place_Payload_with(String name, String language, String address) throws IOException {
+
 
 		resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 
-		req = given().spec(requestSpecification()).body(data.addPlacePayLoad()); // place data coming TestDataBuild
+		req = given().spec(requestSpecification()).body(data.addPlacePayLoad(name,language,address)); // place data coming TestDataBuild
 																					// class
 
 	}

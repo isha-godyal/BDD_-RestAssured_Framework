@@ -9,16 +9,16 @@ import pojo.Location;
 // Moving Test Data code from step Defination to another file 
 public class TestDataBuild {
 
-	public AddPlace addPlacePayLoad() {
+	public AddPlace addPlacePayLoad(String name, String language, String address) {
 		// Create place object and set value which we can pass in request body of
 		// addPlace call
 		AddPlace place = new AddPlace();
 		place.setAccuracy(50);
-		place.setAddress("29, side layout, cohen 09");
-		place.setLanguage("French-IN");
+		place.setAddress(address);
+		place.setLanguage(language);
 		place.setPhone_number("(+91) 983 893 3937");
 		place.setWebsite("https://rahulshettyacademy.com");
-		place.setName("Frontline house");
+		place.setName(name);
 
 		// create list to store types
 		List<String> myList = new ArrayList<String>();
