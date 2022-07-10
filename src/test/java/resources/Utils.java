@@ -23,13 +23,12 @@ public class Utils {
 	public RequestSpecification requestSpecification() throws IOException {
 
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
-		
-		if(req==null) {
-			//creating logging.txt for logging details
+
+		if (req == null) {
+			// creating logging.txt for logging details
 			PrintStream log = new PrintStream(new FileOutputStream("logging.txt"));
-			req = new RequestSpecBuilder().setBaseUri(getGlobalValue("baseUrl"))
-					.addQueryParam("key", "qaclick123")
-					.addFilter(RequestLoggingFilter.logRequestTo(log))   // add request log in logging.txt
+			req = new RequestSpecBuilder().setBaseUri(getGlobalValue("baseUrl")).addQueryParam("key", "qaclick123")
+					.addFilter(RequestLoggingFilter.logRequestTo(log)) // add request log in logging.txt
 					.addFilter(ResponseLoggingFilter.logResponseTo(log)) // add response log in logging.txt
 					.setContentType(ContentType.JSON).build();
 		}
@@ -51,4 +50,9 @@ public class Utils {
 
 	}
 
+	public String getJsonPath(Response response, String key) {
+		String resp = response.asString();
+		JsonPath js = new JsonPath(resp);
+		return js.get(key).toString();
+	}
 }

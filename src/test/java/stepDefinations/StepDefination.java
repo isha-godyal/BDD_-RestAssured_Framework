@@ -23,7 +23,9 @@ public class StepDefination extends Utils {
 	RequestSpecification req;
 	ResponseSpecification resspec;
 	Response response;
-
+	
+	static String place_id;
+	
 	// create an object to TestDataBuild to get TestData such place data by calling
 	// addPlacePayLoad method
 	TestDataBuild data = new TestDataBuild();
@@ -61,9 +63,18 @@ public class StepDefination extends Utils {
 
 	@Then("{string} in response body is {string}")
 	public void in_response_body_is(String keyValue, String expectedValue) {
-		JsonPath js = new JsonPath(response.asString());
-
-		assertEquals(js.get(keyValue).toString(), expectedValue);
+			assertEquals(getJsonPath(response, keyValue), expectedValue);
 	}
 
+	@Then("verify place_Id created maps to {string} using {string}")
+	public void verify_place_Id_created_maps_to_using(String expectedName, String resource) throws IOException {
+
+		// requestSpec
+		place_id = getJsonPath(response, "place_id");
+		req = given().spec(requestSpecification()).queryParam("place_id", place_id);
+		user_calls_with_http_request(resource, "GET");
+		String actualName = getJsonPath(response, "name");
+		assertEquals(actualName, expectedName);
+
+	}
 }
